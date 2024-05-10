@@ -36,7 +36,7 @@ exam_reg=1312650452
 python main.py
 ```
 
-This script will launch a browser in headless mode (to run invisibly in the background), navigate to the Bangladesh Education Board Results website, fill out the form with the provided credentials, calculate the sum of specific numbers, submit the form, and save the result as a PDF file named `result.pdf` in the current directory.If you want to run the script with the browser visible, you can set `headless` to `False` in the script.
+This script will launch a browser in headless mode, If you want to run the script with the browser visible, you can set `headless` to `False` in the script.
 
 ### Notes
 * The script will keep running until it successfully saves the PDF file.
