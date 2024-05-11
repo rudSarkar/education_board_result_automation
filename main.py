@@ -34,7 +34,16 @@ def run(playwright: Playwright) -> None:
     page.get_by_role("button", name="Submit").click()
 
     sleep(4)
-    page.pdf(path='result.pdf')
+    try:
+        get_search_again = page.locator(
+            "body > table > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(3) > td > a"
+        ).wait_for(timeout=3000).inner_text()
+
+        if get_search_again == "Search Again":
+            page.pdf(path='result.pdf')
+            pdf_saved = True
+    except:
+        pdf_saved = False
 
     check_file = os.path.isfile("./result.pdf")
     if check_file:
