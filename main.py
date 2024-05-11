@@ -4,11 +4,11 @@ from time import sleep
 from dotenv import load_dotenv, dotenv_values
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-pdf_saved = False
+status = True
 load_dotenv()
 
 def run(playwright: Playwright) -> None:
-    global pdf_saved
+    global status
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -33,21 +33,17 @@ def run(playwright: Playwright) -> None:
 
     page.get_by_role("button", name="Submit").click()
 
-    sleep(4)
     try:
         get_search_again = page.locator(
             "body > table > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(3) > td > a"
-        ).wait_for(timeout=3000).inner_text()
+        ).inner_text()
 
         if get_search_again == "Search Again":
             page.pdf(path='result.pdf')
-            pdf_saved = True
+            status = False
+        sleep(4)
     except:
-        pdf_saved = False
-
-    check_file = os.path.isfile("./result.pdf")
-    if check_file:
-        pdf_saved = True
+        status = True
 
     # ---------------------
     context.close()
@@ -55,6 +51,6 @@ def run(playwright: Playwright) -> None:
 
 
 with sync_playwright() as playwright:
-    while not pdf_saved:
+    while status:
         run(playwright)
         
